@@ -5,44 +5,34 @@
 #include <mutex>
 #include <memory>
 #include <string>
-#include <atomic>
-#include <unordered_map>
 
 class ChatEntity {
 protected:
-    std::string username;
+	std::string username;
 
 
 public:
-    virtual void sendMessage(const std::string& msg) = 0;
-    virtual ~ChatEntity() = default;
-};
-
-struct ClientInfo {
-    std::shared_ptr<sf::TcpSocket> socket;
-    std::string username;
-    std::string room;
+	virtual void sendMessage(const std::string& msg) = 0;
+	virtual ~ChatEntity() = default;
 };
 
 class ChatServer : public ChatEntity {
 private:
-    sf::TcpListener listener;
-    std::vector<ClientInfo> clients;
-    std::vector<std::thread> clientThreads;
-    std::mutex clientsMutex;
-    void removeClient(const std::shared_ptr<sf::TcpSocket>& clientSocket);
-    std::atomic_bool running;
+	sf::TcpListener listener;
+	std::vector<std::shared_ptr<sf::TcpSocket>> clients;
+	std::vector<std::thread> clientThreads;
+	std::mutex clientsMutex;
+	void removeClient(const std::shared_ptr<sf::TcpSocket>& client);
+	bool running;
 
 
-    void handleClient(ClientInfo client);
+	void handleClient(std::shared_ptr<sf::TcpSocket> client);
 
 
 public:
-    ChatServer();
-    void start(unsigned short port);
-    void stop();
-    void broadcastToRoom(const std::string& room, const std::string& msg, const std::shared_ptr<sf::TcpSocket>& except = nullptr);
-    void broadcast(const std::string& msg);
-    void sendMessage(const std::string& msg) override;
-    ~ChatServer();
+	ChatServer();
+	void start(unsigned short port);
+	void broadcast(const std::string& msg);
+	void sendMessage(const std::string& msg) override;
+	~ChatServer();
 };
