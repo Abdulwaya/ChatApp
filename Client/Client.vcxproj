@@ -134,12 +134,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Client.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="Window.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="GUI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
